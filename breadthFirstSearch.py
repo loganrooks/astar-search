@@ -23,13 +23,7 @@ def breadthFirstSearch(graph, start, goal):
         
     return cameFrom
     
-def constructPath(cameFrom, start, goal):
-    currentNode = goal
-    path = [goal]
-    while currentNode is not start:
-        currentNode = cameFrom[currentNode]
-        path.append(currentNode)
-    return path
+
 
 if __name__ == "__main__":
     graph = SquareGrid(30, 15, EXAMPLE_OBSTACLES)
@@ -38,7 +32,6 @@ if __name__ == "__main__":
     goal = (25, 2)
     cameFrom = breadthFirstSearch(graph, start, goal)
     path = constructPath(cameFrom, start, goal)
-    print(path)
     graph.draw(path)
     
     

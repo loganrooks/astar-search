@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import collections
+import collections, heapq
 
 def idToLocation(id, width):
     return (id%width, id // width)
@@ -25,9 +25,7 @@ class Graph:
 class Node:
     def __init__(self, location):
         self._location = location
-        self._origin
-        self._costFromStart
-        self._costToGoal
+        self._origin = None
     
     def getLocation(self):
         return self._location
@@ -41,21 +39,13 @@ class Node:
     def setOrigin(self, originNode):
         self._origin = originNode
     
-    def getCostFromStart(self):
-        return self._costFromStart
+    def __hash__(self):
+        return hash(self._location)
     
-    def setCostFromStart(self, startNode):
-        startLocation = startNode.getLocation
-        self._costFromStart = abs(startLocation[0] - self._location[0]) \
-                            + abs(startLocation[1] - self._location[1]) 
+    def __eq__(self, other):
+        return self._location == other.getLocation()
                             
-    def getCostToGoal(self):
-        return self._costFromStart
     
-    def setCostToGoal(self, startNode):
-        startLocation = startNode.getLocation
-        self._costFromStart = abs(startLocation[0] - self._location[0]) \
-                            + abs(startLocation[1] - self._location[1]) 
                             
 class Queue:
     def __init__(self):
@@ -132,6 +122,52 @@ class SquareGrid:
             tile += "\n"
         return tile
         
+class PriorityQueue:
+    def __init__(self):
+        self._elements = []
+    
+    def isEmpty(self):
+        return len(self._elements) == 0
+    
+    def put(self, item, priority):
+        heapq.heappush(self._elements, (priority, item))
+    
+    def get(self):
+        return heapq.heappop(self._elements)[1]
+    
+class WeightedGrid(SquareGrid):
+    
+
+    def __init__(self, width, height, obstacles=[], weights=None):
+        super().__init__(width, height, obstacles)
+        self.setWeights(weights)
+        
+    def getWeights(self):
+        return self._weights
+    
+    def setWeights(self, weights=None):
+        if (weights == None): self._weights = self._generateDefaultWeights()
+        else: self._weights = weights
+    
+    def cost(self, fromNode, toNode):
+        return self._weights.get(toNode, 1)
+    
+    def _generateDefaultWeights(self):
+        weights = {}
+        for x in range(self._width):
+            for y in range(self._height):
+                weights[(x, y)] = 0
+        return weights
+    
+    
+def constructPath(cameFrom, start, goal):
+    currentNode = goal
+    path = [goal]
+    while currentNode is not start:
+        currentNode = cameFrom[currentNode]
+        path.append(currentNode)
+    return path
+    
         
 
         
