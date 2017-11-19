@@ -25,15 +25,16 @@ def aStarSearch(graph, startNode, goalNode, heuristic=taxiCabDistance):
         for nextNode in graph.getNeighbours(currentNode):
             newCost = cost[currentNode] + graph.cost(currentNode, nextNode)
             if nextNode not in cost or newCost < cost[nextNode]:
-                cost[nextNode] = newCost + heuristic(goalNode, nextNode)
-                frontier.put(nextNode, cost[nextNode])
+                cost[nextNode] = newCost 
+                priority = newCost + heuristic(nextNode, goalNode)
+                frontier.put(nextNode, priority)
                 cameFrom[nextNode] = currentNode
     return cameFrom, cost
 
 if __name__ == "__main__":
     start = (0, 0)
-    goal = (26, 3)
-    weightedGraph = WeightedGrid(30, 15, EXAMPLE_OBSTACLES)
+    goal = (32, 32)
+    weightedGraph = WeightedGrid(34, 34, EXAMPLE_OBSTACLES_02)
     cameFrom, cost = aStarSearch(weightedGraph, start, goal)
     path = constructPath(cameFrom, start, goal)
     weightedGraph.draw(path)
