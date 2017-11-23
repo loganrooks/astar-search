@@ -26,7 +26,7 @@ def breadthFirstSearch(graph, start, goal):
 
 
 if __name__ == "__main__":
-    graph = SquareGrid(30, 15, EXAMPLE_OBSTACLES)
+    graph = SquareGrid(30, 15, EXAMPLE_OBSTACLES_2)
 
     start = (0,0)
     goal = (25, 2)
